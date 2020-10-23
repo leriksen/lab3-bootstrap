@@ -5,6 +5,9 @@ terraform {
     azuredevops = {
       source = "terraform-providers/azuredevops"
     }
+    github = {
+      source = "terraform-providers/github"
+    }
   }
 
   backend "remote" {
@@ -39,10 +42,20 @@ resource "azuredevops_project" "lab3_demo" {
   }
 }
 
-resource "azuredevops_git_repository" "lab3_demo_repo" {
-  project_id = azuredevops_project.lab3_demo.id
-  name       = "leif-lab3-demo"
-  initialization {
-    init_type = "Clean"
+resource "github_repository" "lab3_demo_repo" {
+  name        = "leif-lab3-demo"
+  description = "demo of one-code/many-workspaces pattern"
+
+  private = false
+
+  gitignore_template = "Terraform"
+  license_template = "bsd-3-clause"
+  auto_init = true
+  has_issues = true
+
+  template {
+    owner = "github"
+    repository = "terraform-module-template"
   }
+
 }
