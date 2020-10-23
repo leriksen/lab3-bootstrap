@@ -41,7 +41,7 @@ resource "azuredevops_project" "lab3_demo" {
 
 resource "azuredevops_git_repository" "lab3_demo_repo" {
   project_id = azuredevops_project.lab3_demo.id
-  name       = "lab3-demo"
+  name       = "leif-lab3-demo"
   initialization {
     init_type = "Clean"
   }
