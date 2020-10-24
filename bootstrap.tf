@@ -5,9 +5,7 @@ terraform {
     azuredevops = {
       source = "terraform-providers/azuredevops"
     }
-    github = {
-      source = "terraform-providers/github"
-    }
+    github = { version = "~> 3.0" }
   }
 
   backend "remote" {
@@ -21,9 +19,11 @@ terraform {
 }
 
 ######### AZURE DEVOPS SERVICE ##########
-
 # no version constraint - only at v0.0.1
 provider "azuredevops" {}
+
+######### GITHUB ##########
+provider "github" {}
 
 ######### RESOURCES ##########
 resource "azuredevops_project" "lab3_demo" {
@@ -32,10 +32,9 @@ resource "azuredevops_project" "lab3_demo" {
   visibility         = "private"
   version_control    = "Git"
   work_item_template = "Agile"
-
   features = {
     boards       = "disabled"
-    repositories = "enabled"
+    repositories = "disabled"
     pipelines    = "enabled"
     testplans    = "disabled"
     artifacts    = "disabled"
@@ -43,19 +42,11 @@ resource "azuredevops_project" "lab3_demo" {
 }
 
 resource "github_repository" "lab3_demo_repo" {
-  name        = "leif-lab3-demo"
-  description = "demo of one-code/many-workspaces pattern"
-
-  private = false
-
+  name               = "leif-lab3-demo"
+  description        = "demo of one-code/many-workspaces pattern"
+  visibility         = "public"
   gitignore_template = "Terraform"
-  license_template = "bsd-3-clause"
-  auto_init = true
-  has_issues = true
-
-  template {
-    owner = "github"
-    repository = "terraform-module-template"
-  }
-
+  license_template   = "bsd-3-clause"
+  auto_init          = true
+  has_issues         = true
 }
